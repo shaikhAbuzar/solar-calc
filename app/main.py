@@ -116,7 +116,7 @@ def get_tarif_bill(consumption, type, load=None):
         tarif = get_resident_tarif(consumption)
     elif type in {'LT2A', 'LT2B', 'LT2C', 'default-c'}:
         tarif = get_commercial_tarif(consumption, type, load)
-    elif type == {'LT3A', 'LT3B', 'default-i'}:
+    elif type in {'LT3A', 'LT3B', 'default-i'}:
         tarif = get_industrial_tarif(consumption, type, load)
     bill = tarif * 12
     return tarif, bill
