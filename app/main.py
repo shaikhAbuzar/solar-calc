@@ -1,5 +1,5 @@
 from flask import Flask, request, url_for, render_template
-from forms import UserInputForm
+from app.forms import UserInputForm
 from math import ceil
 
 app = Flask(__name__)
