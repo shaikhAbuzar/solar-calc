@@ -114,14 +114,14 @@ class Maharashtra:
             ec = 5.55 * self.consumption
             return (fc + ec + wc) * 1.075 + st
         if self.type == 'default-i':
-            if not load:
-                load = 35
+            if not self.load:
+                self.load = 35
             ec = 5.55 * self.consumption
         elif self.type == 'LT3B':
-            if not load:
-                load = 40
+            if not self.load:
+                self.load = 40
             ec = 5.95 * self.consumption
-        dc = 355 * load
+        dc = 355 * self.load
         return (dc + ec + wc) * 1.075 + st
 
 
