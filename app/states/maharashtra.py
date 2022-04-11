@@ -151,8 +151,10 @@ class Maharashtra:
         # 5. ROI
         self.roi = max(0.2, self.bill / self.cost)
 
-        # 6. Years
-        self.years = ceil(1 / self.roi)
+        # 6. Years and months
+        years_months = ceil(1 / self.roi * 12)
+        self.years = years_months // 12
+        self.months = years_months % 12
 
         # 7. Years of Profit
         self.profit_years = 25 - self.years
@@ -170,5 +172,6 @@ class Maharashtra:
                 # 'bill': self.bill,
                 'roi': round(self.roi, 2),
                 'years': self.years,
+                'months': self.months,
                 'profit_years': self.profit_years
             }

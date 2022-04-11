@@ -145,7 +145,9 @@ class MadhyaPradesh:
         self.roi = max(0.2, self.bill / self.cost)
 
         # 6. Years
-        self.years = ceil(1 / self.roi)
+        years_months = ceil(1 / self.roi * 12)
+        self.years = years_months // 12
+        self.months = years_months % 12
 
         # 7. Years of Profit
         self.profit_years = 25 - self.years

@@ -16,9 +16,9 @@
         <p class="fs-3 text"><span class="fw-bold">No. of Panels:</span> {{ results.no_of_panels }} units</p>
         <p class="fs-3 text"><span class="fw-bold">Area:</span> {{ results.area }} m<sup>2</sup></p>
         <p class="fs-3 text"><span class="fw-bold">Area(in sq. ft):</span> {{ results.area_sq_ft }} ft<sup>2</sup> </p>
-        <p class="fs-3 text"><span class="fw-bold">Cost:</span> {{ results.cost }} INR</p>
+        <p class="fs-3 text"><span class="fw-bold">Cost:</span> {{ results.cost }} INR + (G.S.T.)</p>
         <p class="fs-3 text"><span class="fw-bold">Return on Investment(ROI):</span> {{ results.roi }} %p.a.</p>
-        <p class="fs-3 text"><span class="fw-bold">Recovery Years:</span> {{ results.years }} years</p>
+        <p class="fs-3 text"><span class="fw-bold">Recovery Years:</span> {{ results.years }} years {{ results.months }} months</p>
         <p class="fs-3 text"><span class="fw-bold">Years of Profit:</span> {{ results.profit_years }} years</p>
         <button class="btn btn-outline-info" onclick="window.location.href='/'">Go Back</button>
     </div>
