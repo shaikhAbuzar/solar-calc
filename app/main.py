@@ -68,7 +68,7 @@ def home():
             # print(f'System Size: {system_size}')
             # print(f'No of Panels: {no_of_panels} | Area: {area} | Area sq ft: {area_sq_ft}')
             # print(f'Cost: {cost}')
-            print(f'Tarif: {results["tarif"]} | Bill: {results["bill"]}')
+            # print(f'Tarif: {results["tarif"]} | Bill: {results["bill"]}')
             # print(f'ROI: {roi}')
             # print(f'Years: {years}')
             # print(f'Profit Years: {profit_years}')

@@ -39,46 +39,49 @@ class Maharashtra:
         return ((self.system_size * self.COST_1) + (self.system_size * self.COST_2)) * 1.1
 
     def get_resident_tarif(self):
-        wc = 1.47
         ed = 1.16
-        st = 0.2604
         tariff = 0
         consumption = self.consumption
+        WC = 1.47 * consumption
+        ST = 0.2604 * consumption
+        EC = 0
 
         def get_tarrif_0_to_100(consumption):
-            fc = 80
             ec = 3.05
-            return (fc + consumption * ec + consumption * wc) * ed + (st * consumption)
+            return consumption * ec
 
         def get_tarrif_100_to_300(consumption):
-            fc = 120
             ec = 5
-            return (fc + consumption * ec + consumption * wc) * ed + (st * consumption)
+            return consumption * ec
 
         def get_tarrif_300_to_500(consumption):
-            fc = 120
             ec = 6.7
-            return (fc + consumption * ec + consumption * wc) * ed + (st * consumption)
+            return consumption * ec
 
         def get_tarrif_greater_500(consumption):
-            fc = 145
             ec = 7.8
-            return (fc + consumption * ec + consumption * wc) * ed + (st * consumption)
+            return consumption * ec
 
         if 0 <= consumption <= 100:
-            tariff += get_tarrif_0_to_100(consumption)
+            FC = 80
+            EC += get_tarrif_0_to_100(consumption)
         elif 100 < consumption <= 300:
-            tariff += get_tarrif_0_to_100(100)
-            tariff += get_tarrif_100_to_300(consumption - 100)
+            FC = 120
+            EC += get_tarrif_0_to_100(100)
+            EC += get_tarrif_100_to_300(consumption - 100)
         elif 300 < consumption <= 500:
-            tariff += get_tarrif_0_to_100(100)
-            tariff += get_tarrif_100_to_300(200)
-            tariff += get_tarrif_300_to_500(consumption - 300)
+            FC = 120
+            EC += get_tarrif_0_to_100(100)
+            EC += get_tarrif_100_to_300(200)
+            EC += get_tarrif_300_to_500(consumption - 300)
         elif consumption > 500:
-            tariff += get_tarrif_0_to_100(100)
-            tariff += get_tarrif_100_to_300(200)
-            tariff += get_tarrif_300_to_500(200)
-            tariff += get_tarrif_greater_500(consumption - 500)
+            FC = 145
+            EC += get_tarrif_0_to_100(100)
+            EC += get_tarrif_100_to_300(200)
+            EC += get_tarrif_300_to_500(200)
+            EC += get_tarrif_greater_500(consumption - 500)
+
+        tariff = (FC + EC + WC) * ed + ST
 
         return tariff
 
@@ -170,7 +173,7 @@ class Maharashtra:
                 'area': round(self.area, 2),
                 'area_sq_ft': round(self.area_sq_ft, 2),
                 'cost': round(self.cost, 2),
-                'tarif': self.tarif,
+                'tarif': round(self.tarif, 2),
                 'bill': self.bill,
                 'roi': round(self.roi, 2),
                 'years': self.years,
