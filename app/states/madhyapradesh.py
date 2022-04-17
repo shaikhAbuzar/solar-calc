@@ -6,7 +6,7 @@ class MadhyaPradesh:
     PANEL_AREA = 2.22
     COST_1 = 53000
     COST_2 = 1000
-    PEAK_HOURS = 4.47
+    PEAK_HOURS = 4.41
     CONNECTION_TYPES = {
         'Residential': 'R',
         'Commercial - LT2A': 'LT2A',
@@ -15,7 +15,7 @@ class MadhyaPradesh:
         'Industrial - LT3A': 'LT3A',
         'Industrial - LT3B': 'LT3B',
     }
-    STATE = 'Maharashtra'
+    STATE = 'Madhya Pradesh'
 
     def __init__(self, consumption, connection_type, type, load=None):
         self.consumption = consumption
@@ -40,41 +40,44 @@ class MadhyaPradesh:
 
     def get_resident_tarif(self):
         consumption = self.consumption
-        fac = 0.07 * consumption
-        fc = 1.67 * consumption
+        FAC = 0.07 * consumption
+        FC = 1.67 * consumption
         ed = 1.12
         tariff = 0
+        EC = 0
 
-        def get_tarrif_0_to_50(consumption):
+        def get_tarrif_0_to_50(consumption, full=True):
             ec = 4.21
-            return fc + (consumption * ec + consumption * fac) * ed
+            return consumption * ec
 
         def get_tarrif_50_to_150(consumption):
             ec = 5.17
-            return fc + (consumption * ec + consumption * fac) * ed
+            return consumption * ec
 
         def get_tarrif_150_to_300(consumption):
             ec = 6.55
-            return fc + (consumption * ec + consumption * fac) * ed
+            return consumption * ec
 
         def get_tarrif_greater_300(consumption):
             ec = 6.74
-            return fc + (consumption * ec + consumption * fac) * ed
+            return consumption * ec
 
         if 0 <= consumption <= 50:
-            tariff += get_tarrif_0_to_50(consumption)
+            EC = get_tarrif_0_to_50(consumption)
         elif 50 < consumption <= 150:
-            tariff += get_tarrif_0_to_50(50)
-            tariff += get_tarrif_50_to_150(consumption - 50)
+            EC += get_tarrif_0_to_50(50)
+            EC += get_tarrif_50_to_150(consumption - 50)
         elif 150 < consumption <= 300:
-            tariff += get_tarrif_0_to_50(50)
-            tariff += get_tarrif_50_to_150(100)
-            tariff += get_tarrif_150_to_300(consumption - 150)
+            EC += get_tarrif_0_to_50(50)
+            EC += get_tarrif_50_to_150(100)
+            EC += get_tarrif_150_to_300(consumption - 150)
         elif consumption > 300:
-            tariff += get_tarrif_0_to_50(50)
-            tariff += get_tarrif_50_to_150(100)
-            tariff += get_tarrif_150_to_300(150)
-            tariff += get_tarrif_greater_300(consumption - 300)
+            EC += get_tarrif_0_to_50(50)
+            EC += get_tarrif_50_to_150(100)
+            EC += get_tarrif_150_to_300(150)
+            EC += get_tarrif_greater_300(consumption - 300)
+
+        tariff = FC + (FAC + EC) * ed
 
         return tariff
 
@@ -150,7 +153,9 @@ class MadhyaPradesh:
         self.months = years_months % 12
 
         # 7. Years of Profit
-        self.profit_years = 25 - self.years
+        profit_years_months = 300 - years_months
+        self.profit_years = profit_years_months // 12
+        self.profit_months = profit_years_months % 12
 
         return {
                 'state': self.STATE,
@@ -161,9 +166,11 @@ class MadhyaPradesh:
                 'area': round(self.area, 2),
                 'area_sq_ft': round(self.area_sq_ft, 2),
                 'cost': round(self.cost, 2),
-                # 'tarif': self.tarif,
-                # 'bill': self.bill,
+                'tarif': self.tarif,
+                'bill': self.bill,
                 'roi': round(self.roi, 2),
                 'years': self.years,
-                'profit_years': self.profit_years
+                'months': self.months,
+                'profit_years': self.profit_years,
+                'profit_months': self.profit_months
             }

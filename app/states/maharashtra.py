@@ -157,7 +157,9 @@ class Maharashtra:
         self.months = years_months % 12
 
         # 7. Years of Profit
-        self.profit_years = 25 - self.years
+        profit_years_months = 300 - years_months
+        self.profit_years = profit_years_months // 12
+        self.profit_months = profit_years_months % 12
 
         return {
                 'state': self.STATE,
@@ -168,10 +170,11 @@ class Maharashtra:
                 'area': round(self.area, 2),
                 'area_sq_ft': round(self.area_sq_ft, 2),
                 'cost': round(self.cost, 2),
-                # 'tarif': self.tarif,
-                # 'bill': self.bill,
+                'tarif': self.tarif,
+                'bill': self.bill,
                 'roi': round(self.roi, 2),
                 'years': self.years,
                 'months': self.months,
-                'profit_years': self.profit_years
+                'profit_years': self.profit_years,
+                'profit_months': self.profit_months
             }
