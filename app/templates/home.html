@@ -7,6 +7,7 @@
     <script type="text/javascript">
         function show_ic(){
             var connection_type = document.getElementById("connection_type");
+            console.log(connection_type.value);
             var selected_connection_type = connection_type.options[connection_type.selectedIndex].value;
             var commercials = document.getElementsByClassName("commercial_connection");
             var industrials = document.getElementsByClassName("industrial_connection")
@@ -55,10 +56,10 @@
             // For connection type
             if (state == 'Gujrat'){
                 document.getElementById("connection_type_gujrat").style.display = "block";
-                document.getElementById("connection_type").style.display = "none";
+                document.getElementById("connection_type_others").style.display = "none";
             } else {
                 document.getElementById("connection_type_gujrat").style.display = "none";
-                document.getElementById("connection_type").style.display = "block";
+                document.getElementById("connection_type_others").style.display = "block";
             }
         }
     </script>
@@ -81,7 +82,7 @@
                     {{ form.consumption.label(class="form-control-label fs-3 text") }}
                     {{ form.consumption(class="form-control form-control-lg") }}
                 </div>
-                <div class="form-group" id="connection_type">
+                <div class="form-group" id="connection_type_others">
                     {{ form.connection.label(class="form-control-label fs-3 text") }}
                     {{ form.connection(class="form-control form-control-lg", onchange="show_ic()", id="connection_type") }}
                 </div>
