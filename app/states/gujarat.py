@@ -1,6 +1,6 @@
 from math import ceil
 
-class Gujrat:
+class Gujarat:
     # constants
     PANEL_SIZE = 0.46
     PANEL_AREA = 2.22
@@ -11,7 +11,7 @@ class Gujrat:
         'Residential General Purpose': 'RGP',
         'Non Residential General Purpose': 'NRGP',
     }
-    STATE = 'Gujrat'
+    STATE = 'Gujarat'
 
     def __init__(self, consumption, connection_type, type, load=None):
         self.consumption = consumption

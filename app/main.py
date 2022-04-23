@@ -2,7 +2,7 @@ from flask import Flask, request, url_for, render_template
 from app.forms import UserInputForm
 from app.states.madhyapradesh import MadhyaPradesh
 from app.states.maharashtra import Maharashtra
-from app.states.gujrat import Gujrat
+from app.states.gujarat import Gujarat
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'THISisNOTsoSECRET'
@@ -91,7 +91,7 @@ def home():
             if load != None:
                 load = int(load)
 
-            results = Gujrat(consumption, connection_type, ctype, load).get_results()
+            results = Gujarat(consumption, connection_type, ctype, load).get_results()
 
             # DEBUG
             # print(f'System Size: {system_size}')

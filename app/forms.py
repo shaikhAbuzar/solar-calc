@@ -6,7 +6,7 @@ STATES = (
     ('Select State', 'Select State'),
     ('Maharashtra', 'Maharashtra'),
     ('MadhyaPradesh', 'Madhya Pradesh'),
-    ('Gujrat', 'Gujrat'),
+    ('Gujrat', 'Gujarat'),
 )
 CONNECTION_TYPES = (
     ('Residential', 'Residential'),
