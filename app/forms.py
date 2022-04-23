@@ -6,11 +6,16 @@ STATES = (
     ('Select State', 'Select State'),
     ('Maharashtra', 'Maharashtra'),
     ('MadhyaPradesh', 'Madhya Pradesh'),
+    ('Gujrat', 'Gujrat'),
 )
 CONNECTION_TYPES = (
     ('Residential', 'Residential'),
     ('Commercial', 'Commercial'),
     ('Industrial', 'Industrial'),
+)
+CONNECTION_TYPES_GUJRAT = (
+    ('Residential General Purpose', 'Residential General Purpose'),
+    ('Non Residential General Purpose', 'Non Residential General Purpose'),
 )
 COMMERCIAL_TYPES_MH = (
     ('default-c', 'Default'),
@@ -52,6 +57,11 @@ class UserInputForm(FlaskForm):
         choices=CONNECTION_TYPES,
         validators=[InputRequired()]
     )
+    connection_gujrat = SelectField(
+        'Connection Type',
+        choices=CONNECTION_TYPES_GUJRAT,
+        validators=[InputRequired()]
+    )
     commercial_type_mh = SelectField(
         'Commercial Type',
         choices=COMMERCIAL_TYPES_MH,
@@ -69,6 +79,6 @@ class UserInputForm(FlaskForm):
         choices=INDUSTRIAL_TYPES_MP,
     )
     connected_load = IntegerField(
-        'Connected Load (optional)',
+        'Connected Load',
     )
     submit = SubmitField('Calculate')

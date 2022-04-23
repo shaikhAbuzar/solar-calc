@@ -38,6 +38,7 @@
         function show_state(){
             var state = document.getElementById("state");
             var state = state.options[state.selectedIndex].value;
+            // For industrial and commercial connection specific to state
             if (state == "Maharashtra"){
                 document.getElementById("mh_connection").style.display = "block";
                 document.getElementById("mp_connection").style.display = "none";
@@ -49,6 +50,15 @@
             else{
                 document.getElementById("mh_connection").style.display = "none";
                 document.getElementById("mp_connection").style.display = "none";
+            }
+
+            // For connection type
+            if (state == 'Gujrat'){
+                document.getElementById("connection_type_gujrat").style.display = "block";
+                document.getElementById("connection_type").style.display = "none";
+            } else {
+                document.getElementById("connection_type_gujrat").style.display = "none";
+                document.getElementById("connection_type").style.display = "block";
             }
         }
     </script>
@@ -71,9 +81,13 @@
                     {{ form.consumption.label(class="form-control-label fs-3 text") }}
                     {{ form.consumption(class="form-control form-control-lg") }}
                 </div>
-                <div class="form-group">
+                <div class="form-group" id="connection_type">
                     {{ form.connection.label(class="form-control-label fs-3 text") }}
                     {{ form.connection(class="form-control form-control-lg", onchange="show_ic()", id="connection_type") }}
+                </div>
+                <div class="form-group" id="connection_type_gujrat" style="display: none;">
+                    {{ form.connection_gujrat.label(class="form-control-label fs-3 text") }}
+                    {{ form.connection_gujrat(class="form-control form-control-lg", onchange="show_ic()", id="connection_type") }}
                 </div>
                 <div id="mh_connection" style="display: none;">
                     <div class="form-group commercial_connection" style="display: none;">

@@ -2,6 +2,7 @@ from flask import Flask, request, url_for, render_template
 from app.forms import UserInputForm
 from app.states.madhyapradesh import MadhyaPradesh
 from app.states.maharashtra import Maharashtra
+from app.states.gujrat import Gujrat
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'THISisNOTsoSECRET'
@@ -63,6 +64,34 @@ def home():
                 load = int(load)
 
             results = MadhyaPradesh(consumption, connection_type, ctype, load).get_results()
+
+            # DEBUG
+            # print(f'System Size: {system_size}')
+            # print(f'No of Panels: {no_of_panels} | Area: {area} | Area sq ft: {area_sq_ft}')
+            # print(f'Cost: {cost}')
+            # print(f'Tarif: {results["tarif"]} | Bill: {results["bill"]}')
+            # print(f'ROI: {roi}')
+            # print(f'Years: {years}')
+            # print(f'Profit Years: {profit_years}')
+            # print(f'Connection Type: {ctype}')
+
+            return render_template('results.html', results=results)
+
+        if state == 'Gujrat':
+            consumption = int(input_form.consumption.data)
+            if consumption == 0:
+                return '<h1 class="container mt-4">Please start using electricity first</h1>'
+            connection_type = input_form.connection_gujrat.data
+            if connection_type == 'Residential General Purpose':
+                ctype = 'RGP'
+            elif connection_type == 'Non Residential General Purpose':
+                ctype = 'NRGP'
+
+            load = input_form.connected_load.data
+            if load != None:
+                load = int(load)
+
+            results = Gujrat(consumption, connection_type, ctype, load).get_results()
 
             # DEBUG
             # print(f'System Size: {system_size}')
