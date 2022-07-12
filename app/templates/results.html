@@ -8,7 +8,7 @@
     <title>Calculated Results</title>
 </head>
 <body>
-    <div class="container mt-4">
+    <div class="container mt-4 mb-4">
         <p class="fs-3 text"><span class="fw-bold">Results For {{ results.state }}</span></p>
         <p class="fs-3 text"><span class="fw-bold">Consumption:</span> {{ results.consumption }} KWH</p>
         <p class="fs-3 text"><span class="fw-bold">Connection:</span> {{ results.connection }}</p>
@@ -21,6 +21,8 @@
         <p class="fs-3 text"><span class="fw-bold">Return on Investment(ROI):</span> {{ results.roi }} %p.a.</p>
         <p class="fs-3 text"><span class="fw-bold">Recovery Years:</span> {{ results.years }} years {{ results.months }} months</p>
         <p class="fs-3 text"><span class="fw-bold">Years of Profit:</span> {{ results.profit_years }} years {{ results.profit_months }} months</p>
+        <p class="fs-3 text"><span class="fw-bold">Cost Breakup by Year:</span></p>
+        {{ data_table|safe }}
         <button class="btn btn-outline-info" onclick="window.location.href='/'">Go Back</button>
     </div>
 </body>
