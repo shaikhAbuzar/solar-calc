@@ -1,3 +1,4 @@
+from ctypes import resize
 import pandas as pd
 from flask import Flask, request, url_for, render_template
 from app.forms import UserInputForm
@@ -10,8 +11,8 @@ app.config['SECRET_KEY'] = 'THISisNOTsoSECRET'
 app.config['DEBUG'] = True
 
 
-def create_table(principal, consumption):
-    rate = 8.48
+def create_table(principal, consumption, tarif):
+    rate = tarif / consumption
     annual_consumption = consumption * 12
     maintenance_cost = 0
     period = 25
@@ -82,6 +83,7 @@ def home():
                 load = int(load)
 
             results = Maharashtra(consumption, connection_type, ctype, load).get_results()
+            data_table = create_table(results['cost'], consumption, results['tarif'])
 
             # DEBUG
             # print(f'System Size: {system_size}')
@@ -92,8 +94,6 @@ def home():
             # print(f'Years: {years}')
             # print(f'Profit Years: {profit_years}')
             # print(f'Connection Type: {ctype}')
-
-            data_table = create_table(results['cost'], consumption)
 
             return render_template('results.html', results=results, data_table=data_table)
 
@@ -114,6 +114,7 @@ def home():
                 load = int(load)
 
             results = MadhyaPradesh(consumption, connection_type, ctype, load).get_results()
+            data_table = create_table(results['cost'], consumption, results['tarif'])
 
             # DEBUG
             # print(f'System Size: {system_size}')
@@ -125,7 +126,7 @@ def home():
             # print(f'Profit Years: {profit_years}')
             # print(f'Connection Type: {ctype}')
 
-            return render_template('results.html', results=results)
+            return render_template('results.html', results=results, data_table=data_table)
 
         if state == 'Gujrat':
             consumption = int(input_form.consumption.data)
