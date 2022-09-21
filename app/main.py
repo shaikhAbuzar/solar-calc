@@ -97,7 +97,11 @@ def home():
             # print(f'Profit Years: {profit_years}')
             # print(f'Connection Type: {ctype}')
 
-            return render_template('results.html', results=results, data_table=data_table)
+            return render_template(
+                'results.html',
+                results=results,
+                data_table=data_table
+            )
 
         elif state == 'MadhyaPradesh':
             consumption = int(input_form.consumption.data)
@@ -128,7 +132,11 @@ def home():
             # print(f'Profit Years: {profit_years}')
             # print(f'Connection Type: {ctype}')
 
-            return render_template('results.html', results=results, data_table=data_table)
+            return render_template(
+                'results.html',
+                results=results,
+                data_table=data_table
+            )
 
         elif state == 'Gujrat':
             consumption = int(input_form.consumption.data)
@@ -156,7 +164,10 @@ def home():
             # print(f'Profit Years: {profit_years}')
             # print(f'Connection Type: {ctype}')
 
-            return render_template('results.html', results=results)
+            return render_template(
+                'results.html',
+                results=results
+            )
 
         elif state in CountryInfo('India').provinces():
             consumption = int(input_form.consumption.data)
@@ -180,7 +191,12 @@ def home():
             # print(f'Profit Years: {profit_years}')
             # print(f'Connection Type: {ctype}')
 
-            return render_template('results.html', results=results)
+            data_table = create_table(results['cost'], consumption, results['tarif'])
+            return render_template(
+                'results.html',
+                results=results,
+                data_table=data_table
+            )
 
 
 if __name__ == "__main__":
