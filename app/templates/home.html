@@ -39,27 +39,46 @@
         function show_state(){
             var state = document.getElementById("state");
             var state = state.options[state.selectedIndex].value;
-            // For industrial and commercial connection specific to state
-            if (state == "Maharashtra"){
-                document.getElementById("mh_connection").style.display = "block";
-                document.getElementById("mp_connection").style.display = "none";
-            }
-            else if (state == "MadhyaPradesh"){
+            console.log(state)
+            console.log(state != "Maharashtra" && state != "Madhya Pradesh" && state != "Gujarat")
+
+            // For Remaining states
+            if (state != "Maharashtra" && state != "Madhya Pradesh" && state != "Gujarat"){
+                console.log("Others")
+                document.getElementById("connection_type_gujarat").style.display = "none";
+                document.getElementById("connection_type_others").style.display = "none";
                 document.getElementById("mh_connection").style.display = "none";
-                document.getElementById("mp_connection").style.display = "block";
+                document.getElementById("mp_connection").style.display = "none";
+                document.getElementById("all-other-states").style.display = "block";
             }
             else{
-                document.getElementById("mh_connection").style.display = "none";
-                document.getElementById("mp_connection").style.display = "none";
-            }
-
-            // For connection type
-            if (state == 'Gujrat'){
-                document.getElementById("connection_type_gujrat").style.display = "block";
-                document.getElementById("connection_type_others").style.display = "none";
-            } else {
-                document.getElementById("connection_type_gujrat").style.display = "none";
+                console.log("Not Others")
+                document.getElementById("all-other-states").style.display = "none";
                 document.getElementById("connection_type_others").style.display = "block";
+
+                // For industrial and commercial connection specific to state
+                if (state == "Maharashtra"){
+                    document.getElementById("mh_connection").style.display = "block";
+                    document.getElementById("mp_connection").style.display = "none";
+                }
+                else if (state == "Madhya Pradesh"){
+                    console.log(state)
+                    document.getElementById("mh_connection").style.display = "none";
+                    document.getElementById("mp_connection").style.display = "block";
+                }
+                else{
+                    document.getElementById("mh_connection").style.display = "none";
+                    document.getElementById("mp_connection").style.display = "none";
+                }
+
+                // For Gujarat
+                if (state == 'Gujarat'){
+                    document.getElementById("connection_type_gujarat").style.display = "block";
+                    document.getElementById("connection_type_others").style.display = "none";
+                } else {
+                    document.getElementById("connection_type_gujarat").style.display = "none";
+                    document.getElementById("connection_type_others").style.display = "block";
+                }
             }
         }
     </script>
@@ -82,13 +101,13 @@
                     {{ form.consumption.label(class="form-control-label fs-3 text") }}
                     {{ form.consumption(class="form-control form-control-lg") }}
                 </div>
-                <div class="form-group" id="connection_type_others">
+                <div class="form-group" id="connection_type_others" style="display: none;">
                     {{ form.connection.label(class="form-control-label fs-3 text") }}
                     {{ form.connection(class="form-control form-control-lg", onchange="show_ic()", id="connection_type") }}
                 </div>
-                <div class="form-group" id="connection_type_gujrat" style="display: none;">
-                    {{ form.connection_gujrat.label(class="form-control-label fs-3 text") }}
-                    {{ form.connection_gujrat(class="form-control form-control-lg", onchange="show_ic()", id="connection_type") }}
+                <div class="form-group" id="connection_type_gujarat" style="display: none;">
+                    {{ form.connection_gujarat.label(class="form-control-label fs-3 text") }}
+                    {{ form.connection_gujarat(class="form-control form-control-lg", onchange="show_ic()", id="connection_type") }}
                 </div>
                 <div id="mh_connection" style="display: none;">
                     <div class="form-group commercial_connection" style="display: none;">
@@ -109,6 +128,10 @@
                         {{ form.industrial_type_mp.label(class="form-control-label fs-3 text") }}
                         {{ form.industrial_type_mp(class="form-control form-control-lg") }}
                     </div>
+                </div>
+                <div id="all-other-states" class="form-group tarrif" style="display: none;">
+                    {{ form.tariff.label(class="form-control-label fs-3 text") }}
+                    {{ form.tariff(class="form-control form-control-lg") }}
                 </div>
                 <div class="form-group">
                     {{ form.connected_load.label(class="form-control-label fs-3 text") }}

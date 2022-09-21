@@ -1,19 +1,19 @@
 from flask_wtf import FlaskForm
-from wtforms import SelectField, IntegerField, SubmitField
+from wtforms import SelectField, IntegerField, SubmitField, FloatField
 from wtforms.validators import InputRequired
+from countryinfo import CountryInfo
 
 STATES = (
     ('Select State', 'Select State'),
-    ('Maharashtra', 'Maharashtra'),
-    ('MadhyaPradesh', 'Madhya Pradesh'),
-    ('Gujrat', 'Gujarat'),
+    *((state, state) for state in CountryInfo('India').provinces())
 )
+
 CONNECTION_TYPES = (
     ('Residential', 'Residential'),
     ('Commercial', 'Commercial'),
     ('Industrial', 'Industrial'),
 )
-CONNECTION_TYPES_GUJRAT = (
+CONNECTION_TYPES_GUJARAT = (
     ('Residential General Purpose', 'Residential General Purpose'),
     ('Non Residential General Purpose', 'Non Residential General Purpose'),
 )
@@ -57,9 +57,9 @@ class UserInputForm(FlaskForm):
         choices=CONNECTION_TYPES,
         validators=[InputRequired()]
     )
-    connection_gujrat = SelectField(
+    connection_gujarat = SelectField(
         'Connection Type',
-        choices=CONNECTION_TYPES_GUJRAT,
+        choices=CONNECTION_TYPES_GUJARAT,
         validators=[InputRequired()]
     )
     commercial_type_mh = SelectField(
@@ -80,5 +80,8 @@ class UserInputForm(FlaskForm):
     )
     connected_load = IntegerField(
         'Connected Load',
+    )
+    tariff = FloatField(
+        'Tariff'
     )
     submit = SubmitField('Calculate')
