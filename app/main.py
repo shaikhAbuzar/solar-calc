@@ -168,7 +168,7 @@ def home():
             if load != None:
                 load = int(load)
 
-            results = Others(consumption, tariff, ctype, load).get_results()
+            results = Others(consumption, tariff, load).get_results()
 
             # DEBUG
             # print(f'System Size: {system_size}')

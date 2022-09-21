@@ -9,7 +9,7 @@ class Others:
     PEAK_HOURS = 4.47
     STATE = 'Others'
 
-    def __init__(self, consumption, tarif, type, load=None):
+    def __init__(self, consumption, tarif, type='Others', load=None):
         self.consumption = consumption
         self.type = type
         self.load = load
@@ -63,6 +63,7 @@ class Others:
         return {
                 'state': self.STATE,
                 'consumption': self.consumption,
+                'connection': 'Others',
                 'system_size': round(self.system_size, 2),
                 'no_of_panels': ceil(self.no_of_panels),
                 'area': round(self.area, 2),
