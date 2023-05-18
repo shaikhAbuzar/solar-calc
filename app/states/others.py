@@ -9,10 +9,8 @@ class Others:
     PEAK_HOURS = 4.47
     STATE = 'Others'
 
-    def __init__(self, consumption, tarif, type='Others', load=None):
+    def __init__(self, consumption, tarif):
         self.consumption = consumption
-        self.type = type
-        self.load = load
         self.tarif = tarif
 
     def get_system_size(self):
