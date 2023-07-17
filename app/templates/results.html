@@ -1,29 +1,176 @@
+{% from 'macros.html' import navbar,headblock,empty_cols %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <title>Calculated Results</title>
+    {{ headblock('Calculated Results') }}
 </head>
 <body>
+    {{ navbar(1) }}
+
+    <div class="container result-box pt-2 pb-2">
+        <h1 class="fs-1 b-ffw">YOUR RESULTS</h1>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-8">
+                <!-- System Size -->
+                <div class="row">
+                    <div class="col rh-font rh-ltr2">System Size</div>
+                    <div class="col rh-font rh-rtr2" style="border-radius: 0 50px 0 0;">{{ results.system_size }}</div>
+                </div>
+                <!-- Cost -->
+                <div class="row">
+                    <div class="col rh-font rh-ltr2" style="border-radius: 0 0 0 50px;">Cost</div>
+                    <div class="col rh-font rh-rtr2">{{ results.cost }} INR + (G.S.T.)</div>
+                </div>
+                <!-- Break Even Period -->
+                <div class="row">
+                    <div class="col rh-font rh-ltr3" style="border-radius: 50px 0 0 0;">Break Even Period</div>
+                    <div class="col rh-font rh-rtr3">{{ break_even }} Year(s)</div>
+                </div>
+                <!-- Area Required -->
+                <div class="row">
+                    <div class="col rh-font rh-ltr3">Area Required</div>
+                    <div class="col rh-font rh-rtr3">{{ results.area }} m<sup>2</sup> / {{ results.area_sq_ft }} ft<sup>2</sup></div>
+                </div>
+                <!-- Units Produced -->
+                <div class="row">
+                    <div class="col rh-font rh-ltr3">Units Produced</div>
+                    <div class="col rh-font rh-rtr3" style="border-radius: 0 0 50px 0;">{{ solar_units }} KWh</div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="row">
+                    <div class="without-bg ms-3 ps-0">
+                        <div class="without-fg ms-0 mt-5 row">
+                            <div class="col-2 image-cfl"><img src="{{url_for('static', filename='images/cfl.svg')}}" alt="cfl" height="100px"></div>
+                            <div class="col-10"><p class="fs-3">Without Solar</p></div>
+                        </div>
+                        <div class="container">
+                            <ul style="list-style-type: none;">
+                                <li>Tariff: INR {{results.tarif}}</li>
+                                <li>Revenue Generated: INR 0</li>
+                                <li>Units of Renewable Energy Generated: 0 KWh</li>
+                            </ul>
+                        </div>
+                    </div>
+                <div>
+                <div class="row">
+                    <div class="with-bg pe-0">
+                        <div class="with-fg mt-5 row">
+                            <div class="col-10"><p class="fs-3">With Solar</p></div>
+                            <div class="col-2 image-bulb"><img src="{{url_for('static', filename='images/bulb.png')}}" alt="bulb" height="150px"></div>
+                        </div>
+                        <div class="container">
+                            <ul style="list-style-type: none;">
+                                <li>Tariff: INR 0<sup>**</sup></li>
+                                <li>Net Savings: INR {{net_savings}}</li>
+                                <li>Units of Renewable Energy Generated: {{solar_units}} KWh</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="container mt-4 mb-4">
-        <p class="fs-3 text"><span class="fw-bold">Results For {{ results.state }}</span></p>
-        <p class="fs-3 text"><span class="fw-bold">Consumption:</span> {{ results.consumption }} KWH</p>
-        <p class="fs-3 text"><span class="fw-bold">Connection:</span> {{ results.connection }}</p>
-        <p class="fs-3 text"><span class="fw-bold">System Size:</span> {{ results.system_size }}</p>
-        <p class="fs-3 text"><span class="fw-bold">No. of Panels:</span> {{ results.no_of_panels }} units</p>
-        <p class="fs-3 text"><span class="fw-bold">Area:</span> {{ results.area }} m<sup>2</sup></p>
-        <p class="fs-3 text"><span class="fw-bold">Area(in sq. ft):</span> {{ results.area_sq_ft }} ft<sup>2</sup> </p>
-        <p class="fs-3 text"><span class="fw-bold">Tariff:</span> {{ results.tarif }} INR </p>
-        <p class="fs-3 text"><span class="fw-bold">Cost:</span> {{ results.cost }} INR + (G.S.T.)</p>
-        <p class="fs-3 text"><span class="fw-bold">Return on Investment(ROI):</span> {{ results.roi }} %p.a.</p>
-        <p class="fs-3 text"><span class="fw-bold">Recovery Years:</span> {{ results.years }} years {{ results.months }} months</p>
-        <p class="fs-3 text"><span class="fw-bold">Years of Profit:</span> {{ results.profit_years }} years {{ results.profit_months }} months</p>
-        <p class="fs-3 text"><span class="fw-bold">Cost Breakup by Year:</span></p>
-        {{ data_table|safe }}
-        <button class="btn btn-outline-info" onclick="window.location.href='/'">Go Back</button>
+        <h3 class="spec-font">Specifications</h3>
+        <ul>
+            <li class="fs-5 spec-font">State: {{ results.state }}</li>
+            <li class="fs-5 spec-font">Consumption: {{ results.consumption }} KWh</li>
+            <li class="fs-5 spec-font">No. of Panels: {{ results.no_of_panels }} units</li>
+            <li class="fs-5 spec-font">Tariff: {{ results.tarif }} INR </li>
+            <li class="fs-5 spec-font">Return on Investment (ROI): {{ results.roi }} % p.a.</li>
+            <li class="fs-5 spec-font">Recovery Years: {{ results.years }} years {{ results.months }} months</li>
+            <li class="fs-5 spec-font">Years of Profit: {{ results.profit_years }} years {{ results.profit_months }} months</li>
+        </ul>
+    </div>
+    <div class="container pb-4 mb-4 empty-line"></div>
+    <div class="container mt-4 mb-4">
+        <p class="fs-2 spec-font" style="text-align: center;">Please refer back for financial details. (An example of F-details)</p>
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        {% for col in column_names %}
+                            <th id="table-header">{{col}}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in row_data %}
+                        {% set outer_index = loop.index %}
+                        {% set vars = {'id': False} %}
+                        <tr>
+                            {% for row_ in row %}
+                                {% if vars.id or (loop.index == 1 and outer_index == break_even) %}
+                                    {% if vars.update({'id': True}) %}{% endif %}
+                                    <td id="table-cells-be">{{row_}}</td>
+                                {% else %}
+                                    <td id="table-cells">{{row_}}</td>
+                                {% endif %}
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <!-- <button class="btn btn-outline-info" onclick="window.location.href='/'">Go Back</button> -->
+    </div>
+
+    <div class="container mt-4 mb-4">
+        <div class="row">
+            <div class="col-2"></div>
+            <div class="col-8 note-bg">
+                <div class="note p-4">
+                    NOTE:
+                    <ol>
+                        <li>THE SYSTEM IS DESIGNED FOR 100% ENERGY CONSUMPTION & YEARLY OUTPUT OF 13764KWH.</li>
+                        <li>ASSUMING 90% PRODUCTION FOR THE FIRST 10 YEARS AND 85% FOR THE REST.</li>
+                        <li>ASSUMING A 3% INCREASE IN ELECTRICITY RATE EVER YEAR.</li>
+                        <li>ASSUMING THE MAINTENANCE COST TO BE 3% OF CAPITAL COST & INCREASE @5% ANU- ALLY .</li>
+                        <li>UNITS OF RENEWABLE ENERGY GENERATED IS DEPENDENT ON THE FACTOR OF WEATH- ER AND CAN FLUCTUATE SEASON TO SEASON. HENCE THE PAYABLE AMOUNT TO YOUR PROVIDER FLUCTUATES.</li>
+                    </ol>
+
+                    Conclusion :
+                    <ol>
+                        <li>THE INVESTMENT IS SET TO BREAK EVEN IN THE 4TH YEAR AFTER INSTALATION.</li>
+                        <li>THE SOLAR INSTALLATION WILL CUMALATIVELY GENERATE RS 36.2 LAKHS IN SAVINGS</li>
+                    </ol>
+                </div>
+            </div>
+            <div class="col-2"></div>
+        </div>
+    </div>
+
+    <div class="container margin">
+        <div class="row">
+            <div class="col-2"></div>
+            <div class=" col-8">
+                <div class="row">
+                    <div class="col bg-green p-4" style="border-radius: 50px 0 0 0;">
+                        <i class="fas fa-solar-panel icons p-4 icon-box mb-4"></i><br>
+                        <span class="fs-5 pt-4 pb-4 mt-4">It's Renewale</span>
+                    </div>
+                    <div class="col bg-green p-4">
+                        <i class="fas fa-screwdriver-wrench icons p-4 icon-box mb-4"></i><br>
+                        <span class="fs-5 pt-4 pb-4 mt-4">Low Maintenance</span>
+                    </div>
+                    <div class="col bg-green p-4">
+                        <i class="fas fa-hand-holding-dollar icons p-4 icon-box mb-4"></i><br>
+                        <span class="fs-5 pt-4 pb-4 mt-4">Saves Money</span>
+                    </div>
+                    <div class="col bg-green p-4" style="border-radius: 0 0 50px 0;">
+                        <i class="fas fa-temperature-arrow-down icons p-4 icon-box mb-4"></i><br>
+                        <span class="fs-5 pt-4 pb-4 mt-4">Prevents Global Warming</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-2"></div>
+        </div>
     </div>
 </body>
 </html>

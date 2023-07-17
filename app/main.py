@@ -15,9 +15,10 @@ def create_table(principal, consumption, tarif):
     period = 25
     net_savings = 0
     break_even = False
+    break_even_year = -1
     data_dict = {
         'Year': [],
-        'KWH': [],
+        'KWh': [],
         'Rate': [],
         'Savings': [],
         'Maintenance': [],
@@ -30,13 +31,14 @@ def create_table(principal, consumption, tarif):
         net_savings += savings - maintenance_cost
 
         data_dict['Year'].append(year)
-        data_dict['KWH'].append(annual_output)
+        data_dict['KWh'].append(annual_output)
         data_dict['Rate'].append(rate)
         data_dict['Savings'].append(round(savings, 2))
         data_dict['Maintenance'].append(maintenance_cost)
         if not break_even and net_savings >= principal:
             data_dict['Net Savings'].append(f'{str(round(net_savings, 2))} (Break Even)')
             break_even = True
+            break_even_year = year
         else:
             data_dict['Net Savings'].append(str(round(net_savings, 2)))
 
@@ -48,11 +50,7 @@ def create_table(principal, consumption, tarif):
 
     rounded_df = pd.DataFrame(data_dict).round(2)
     # print(rounded_df.to_html())
-    return rounded_df.to_html(
-        index=False,
-        classes='table table-bordered table-hover table-responsive',
-        justify='justify-all'
-    )
+    return rounded_df, break_even_year, sum(data_dict['KWh']), data_dict['Net Savings'][-1]
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -61,12 +59,13 @@ def home():
     if request.method == "GET":
         return render_template('home.html', form=input_form)
     elif request.method == "POST":
+        state = input_form.state.data
         consumption = int(input_form.consumption.data)
         tariff = float(input_form.tariff.data)
         if consumption == 0:
             return '<h1 class="container mt-4">Please start using electricity first</h1>'
 
-        results = Others(consumption, tariff).get_results()
+        results = Others(consumption, tariff, state).get_results()
 
         # DEBUG
         # print(f'System Size: {system_size}')
@@ -78,11 +77,15 @@ def home():
         # print(f'Profit Years: {profit_years}')
         # print(f'Connection Type: {ctype}')
 
-        data_table = create_table(results['cost'], consumption, results['tarif'])
+        data_table, break_even, solar_units, net_savings = create_table(results['cost'], consumption, results['tarif'])
         return render_template(
             'results.html',
             results=results,
-            data_table=data_table
+            column_names=data_table.columns.values,
+            row_data=data_table.values.tolist(),
+            break_even=break_even,
+            solar_units=solar_units,
+            net_savings=net_savings
         )
 
 

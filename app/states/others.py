@@ -7,11 +7,12 @@ class Others:
     COST_1 = 53000
     COST_2 = 1000
     PEAK_HOURS = 4.47
-    STATE = 'Others'
+    STATE = ''
 
-    def __init__(self, consumption, tarif):
+    def __init__(self, consumption, tarif, state):
         self.consumption = consumption
         self.tarif = tarif
+        self.STATE = state
 
     def get_system_size(self):
         return self.consumption / (30 * self.PEAK_HOURS)
@@ -49,7 +50,7 @@ class Others:
         self.roi = max(0.2, self.bill / self.cost)
 
         # 6. Years and months
-        years_months = ceil(1 / self.roi * 12)
+        years_months = ceil(12 / self.roi)
         self.years = years_months // 12
         self.months = years_months % 12
 
@@ -69,7 +70,7 @@ class Others:
                 'cost': round(self.cost, 2),
                 'tarif': round(self.tarif, 2),
                 'bill': self.bill,
-                'roi': round(self.roi, 2),
+                'roi': round(self.roi, 2) * 100,
                 'years': self.years,
                 'months': self.months,
                 'profit_years': self.profit_years,
